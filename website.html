@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaffee Time/Bell</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('snow.gif') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #greeting {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        #time {
+            font-size: 48px;
+            font-weight: bold;
+            color: black;
+            animation: colorCycle 15s infinite alternate;
+        }
+
+        @keyframes colorCycle {
+            0% {
+                color: red;
+            }
+            20% {
+                color: green;
+            }
+            40% {
+                color: blue;
+            }
+            60% {
+                color: orange;
+            }
+            80% {
+                color: purple;
+            }
+            100% {
+                color: red;
+            }
+        }
+
+        #schedule {
+            font-size: 18px;
+            color: white;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        #schedule::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid red;
+            border-radius: 5px;
+            z-index: -1;
+        }
+
+        /* Style for the code text */
+        #codeText {
+            font-family: 'Roboto', sans-serif; /* Roboto font */
+            font-size: 21px; /* Slightly smaller font size */
+            color: white;
+            position: absolute;
+            bottom: 10px; /* Positioned at the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden; /* Hide overflowing text */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+        #codeText::after {
+            content: "|"; /* White text line */
+            display: inline-block;
+            margin-left: 5px; /* Adjust the space between letters and the line */
+            width: 0;
+            color: white;
+            animation: typeText 5s infinite, eraseText 5s infinite 5s; /* Typing and erasing animations */
+        }
+
+        @keyframes typeText {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        @keyframes eraseText {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0;
+            }
+        }
+
+        /* Hide all audio controls */
+        audio::-webkit-media-controls {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <div id="greeting">Hello User, The current time is</div>
+        <div id="time"></div>
+        <div id="schedule">
+            Bell Schedule:<br>
+            1st hour: 7:50 - 8:48 AM<br>
+            2nd hour: 8:52 - 9:45 AM<br>
+            3rd hour: 9:49 - 10:42 AM<br>
+            4th hour: 10:46 - 11:39 AM<br>
+            HS lunch: 11:39 AM - 12:03 PM<br>
+            5th hour: 12:07 - 1:00 PM<br>
+            6th hour: 1:04 - 1:57 PM<br>
+            7th hour: 2:01 - 2:54 PM
+        </div>
+    </div>
+    <!-- Typing and erasing code text -->
+    <div id="codeText"></div>
+    <!-- MP4 audio element for playing the song -->
+    <audio controls>
+        <source src="song.mp4" type="audio/mp4">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+            document.getElementById('time').textContent = timeString;
+        }
+
+        function showAlert() {
+            alert('This time may be behind a bit');
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        setTimeout(showAlert, 5000);
+
+        // Typing and erasing effect for the code text
+        const codeText = document.getElementById('codeText');
+        const text = 'Coded by James';
+        let index = 0;
+        let isTyping = true;
+
+        function typeCodeText() {
+            codeText.textContent = text.slice(0, index);
+            index++;
+
+            if (index > text.length) {
+                isTyping = false;
+                setTimeout(eraseCodeText, 1000);
+            } else {
+                setTimeout(typeCodeText, 150);
+            }
+        }
+
+        function eraseCodeText() {
+            codeText.textContent = text.slice(0, index);
+            index--;
+
+            if (index >= 0) {
+                setTimeout(eraseCodeText, 150);
+            } else {
+                isTyping = true;
+                setTimeout(typeCodeText, 500);
+            }
+        }
+
+        // Start the initial typing animation
+        typeCodeText();
+    </script>
+</body>
+</html>
