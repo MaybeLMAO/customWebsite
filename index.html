@@ -3,68 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TimeHtmlbyJames</title>
+    <title>Chaffee Time/Bell</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            background: linear-gradient(to bottom, black, red);
-            animation: animateBackground 10s linear infinite;
+            background: url('snow.gif') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        #content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
+            align-items: center;
+        }
+
+        #greeting {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
         }
 
         #time {
             font-size: 48px;
             font-weight: bold;
-            color: white;
-            text-shadow: 0 0 10px cyan;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            color: black;
+            animation: colorCycle 15s infinite alternate;
         }
 
-        #message {
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            text-align: center;
-            margin-top: 20px;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+        @keyframes colorCycle {
+            0% {
+                color: red;
+            }
+            20% {
+                color: green;
+            }
+            40% {
+                color: blue;
+            }
+            60% {
+                color: orange;
+            }
+            80% {
+                color: purple;
+            }
+            100% {
+                color: red;
+            }
         }
 
         #schedule {
             font-size: 18px;
             color: white;
-            text-align: left;
             margin-top: 20px;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            position: relative;
         }
 
-        @keyframes animateBackground {
+        #schedule::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 2px solid red;
+            border-radius: 5px;
+            z-index: -1;
+        }
+
+        /* Style for the code text */
+        #codeText {
+            font-family: 'Roboto', sans-serif; /* Roboto font */
+            font-size: 21px; /* Slightly smaller font size */
+            color: white;
+            position: absolute;
+            bottom: 10px; /* Positioned at the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden; /* Hide overflowing text */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+        #codeText::after {
+            content: "|"; /* White text line */
+            display: inline-block;
+            margin-left: 5px; /* Adjust the space between letters and the line */
+            width: 0;
+            color: white;
+            animation: typeText 5s infinite, eraseText 5s infinite 5s; /* Typing and erasing animations */
+        }
+
+        @keyframes typeText {
             0% {
-                background-position: 0% 0%;
+                width: 0;
             }
             100% {
-                background-position: 0% 100%;
+                width: 100%;
             }
+        }
+
+        @keyframes eraseText {
+            0% {
+                width: 100%;
+            }
+            100% {
+                width: 0;
+            }
+        }
+
+        /* Hide all audio controls */
+        audio::-webkit-media-controls {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="time"></div>
-    <div id="message">Hello James, The current time is</div>
-    <div id="schedule">
-        7:50 - 8:48 AM 1st hour<br>
-        8:52 - 9:45 AM 2nd hour<br>
-        9:49 - 10:42 AM 3rd hour<br>
-        10:46 - 11:39 AM 4th hour<br>
-        11:39 AM - 12:03 PM HS lunch<br>
-        12:07 - 1:00 PM 5th hour<br>
-        1:04 - 1:57 PM 6th hour<br>
-        2:01 - 2:54 PM 7th hour<br>
+    <div id="content">
+        <div id="greeting">Hello James, The current time is</div>
+        <div id="time"></div>
+        <div id="schedule">
+            7:50 - 8:48 AM 1st hour<br>
+            8:52 - 9:45 AM 2nd hour<br>
+            9:49 - 10:42 AM 3rd hour<br>
+            10:46 - 11:39 AM 4th hour<br>
+            11:39 AM - 12:03 PM HS lunch<br>
+            12:07 - 1:00 PM 5th hour<br>
+            1:04 - 1:57 PM 6th hour<br>
+            2:01 - 2:54 PM 7th hour<br>
+        </div>
     </div>
+    <!-- Typing and erasing code text -->
+    <div id="codeText"></div>
+    <!-- MP4 audio element for playing the song -->
+    <audio controls>
+        <source src="song.mp4" type="audio/mp4">
+        Your browser does not support the audio element.
+    </audio>
+
     <script>
         function updateTime() {
             const now = new Date();
@@ -78,8 +160,47 @@
             document.getElementById('time').textContent = timeString;
         }
 
+        function showAlert() {
+            alert('This time may be behind a bit');
+        }
+
         setInterval(updateTime, 1000);
         updateTime();
+
+        setTimeout(showAlert, 5000);
+
+        // Typing and erasing effect for the code text
+        const codeText = document.getElementById('codeText');
+        const text = 'Coded by James';
+        let index = 0;
+        let isTyping = true;
+
+        function typeCodeText() {
+            codeText.textContent = text.slice(0, index);
+            index++;
+
+            if (index > text.length) {
+                isTyping = false;
+                setTimeout(eraseCodeText, 1000);
+            } else {
+                setTimeout(typeCodeText, 150);
+            }
+        }
+
+        function eraseCodeText() {
+            codeText.textContent = text.slice(0, index);
+            index--;
+
+            if (index >= 0) {
+                setTimeout(eraseCodeText, 150);
+            } else {
+                isTyping = true;
+                setTimeout(typeCodeText, 500);
+            }
+        }
+
+        // Start the initial typing animation
+        typeCodeText();
     </script>
 </body>
 </html>
