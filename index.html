@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeHtmlbyJames</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(to bottom, black, red);
+            animation: animateBackground 10s linear infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #time {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px cyan;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        #message {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        #schedule {
+            font-size: 18px;
+            color: white;
+            text-align: left;
+            margin-top: 20px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        @keyframes animateBackground {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="time"></div>
+    <div id="message">Hello James, The current time is</div>
+    <div id="schedule">
+        7:50 - 8:48 AM 1st hour<br>
+        8:52 - 9:45 AM 2nd hour<br>
+        9:49 - 10:42 AM 3rd hour<br>
+        10:46 - 11:39 AM 4th hour<br>
+        11:39 AM - 12:03 PM HS lunch<br>
+        12:07 - 1:00 PM 5th hour<br>
+        1:04 - 1:57 PM 6th hour<br>
+        2:01 - 2:54 PM 7th hour<br>
+    </div>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+            document.getElementById('time').textContent = timeString;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
