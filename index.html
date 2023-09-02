@@ -122,6 +122,18 @@
         audio::-webkit-media-controls {
             display: none;
         }
+
+        /* Mouse trail effect */
+        .mouse-trail {
+            position: absolute;
+            background: white;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
     </style>
 </head>
 <body>
@@ -141,6 +153,10 @@
     </div>
     <!-- Typing and erasing code text -->
     <div id="codeText"></div>
+    <!-- Mouse trail elements -->
+    <div class="mouse-trail"></div>
+    <div class="mouse-trail"></div>
+    <div class="mouse-trail"></div>
     <!-- MP4 audio element for playing the song -->
     <audio controls>
         <source src="song.mp4" type="audio/mp4">
@@ -201,6 +217,46 @@
 
         // Start the initial typing animation
         typeCodeText();
+
+        // Mouse trail effect
+        const mouseTrails = document.querySelectorAll('.mouse-trail');
+        let isMouseMoving = false;
+
+        document.addEventListener('mousemove', (event) => {
+            isMouseMoving = true;
+
+            mouseTrails.forEach((trail, index) => {
+                const trailSize = 10 + (index * 5);
+                const trailDelay = 30 * index;
+
+                setTimeout(() => {
+                    const x = event.clientX - trailSize / 2;
+                    const y = event.clientY - trailSize / 2;
+
+                    trail.style.left = `${x}px`;
+                    trail.style.top = `${y}px`;
+                    trail.style.width = `${trailSize}px`;
+                    trail.style.height = `${trailSize}px`;
+                    trail.style.opacity = 0.5;
+                }, trailDelay);
+            });
+        });
+
+        document.addEventListener('mouseout', () => {
+            isMouseMoving = false;
+
+            mouseTrails.forEach((trail) => {
+                trail.style.opacity = 0;
+            });
+        });
+
+        setInterval(() => {
+            if (!isMouseMoving) {
+                mouseTrails.forEach((trail) => {
+                    trail.style.opacity = 0;
+                });
+            }
+        }, 1000);
     </script>
 </body>
 </html>
