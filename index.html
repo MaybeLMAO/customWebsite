@@ -118,21 +118,16 @@
             }
         }
 
-        /* Hide all audio controls */
-        audio::-webkit-media-controls {
-            display: none;
-        }
-
         /* Mouse trail effect */
         .mouse-trail {
             position: absolute;
             background: white;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+            width: 2px; /* Adjust the width of the line */
+            height: 100px; /* Adjust the length of the line */
             opacity: 0.5;
             pointer-events: none;
             transition: opacity 0.2s;
+            transform-origin: top center;
         }
     </style>
 </head>
@@ -154,8 +149,6 @@
     <!-- Typing and erasing code text -->
     <div id="codeText"></div>
     <!-- Mouse trail elements -->
-    <div class="mouse-trail"></div>
-    <div class="mouse-trail"></div>
     <div class="mouse-trail"></div>
     <!-- MP4 audio element for playing the song -->
     <audio controls>
@@ -219,44 +212,23 @@
         typeCodeText();
 
         // Mouse trail effect
-        const mouseTrails = document.querySelectorAll('.mouse-trail');
-        let isMouseMoving = false;
+        const mouseTrail = document.querySelector('.mouse-trail');
 
         document.addEventListener('mousemove', (event) => {
-            isMouseMoving = true;
+            const x = event.clientX;
+            const y = event.clientY;
 
-            mouseTrails.forEach((trail, index) => {
-                const trailSize = 10 + (index * 5);
-                const trailDelay = 30 * index;
-
-                setTimeout(() => {
-                    const x = event.clientX - trailSize / 2;
-                    const y = event.clientY - trailSize / 2;
-
-                    trail.style.left = `${x}px`;
-                    trail.style.top = `${y}px`;
-                    trail.style.width = `${trailSize}px`;
-                    trail.style.height = `${trailSize}px`;
-                    trail.style.opacity = 0.5;
-                }, trailDelay);
-            });
+            mouseTrail.style.left = `${x}px`;
+            mouseTrail.style.top = `${y}px`;
         });
 
         document.addEventListener('mouseout', () => {
-            isMouseMoving = false;
-
-            mouseTrails.forEach((trail) => {
-                trail.style.opacity = 0;
-            });
+            mouseTrail.style.opacity = 0;
         });
 
-        setInterval(() => {
-            if (!isMouseMoving) {
-                mouseTrails.forEach((trail) => {
-                    trail.style.opacity = 0;
-                });
-            }
-        }, 1000);
+        document.addEventListener('mouseover', () => {
+            mouseTrail.style.opacity = 0.5;
+        });
     </script>
 </body>
 </html>
