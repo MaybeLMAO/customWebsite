@@ -151,60 +151,77 @@
         Your browser does not support the audio element.
     </audio>
 
+    <!-- Your provided code starts here -->
+    <style>
+        /* Your additional styles here */
+
+        /* Mouse trail styles */
+        .mouse-trail {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mouse-trail-line {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: white;
+            animation: fadeOut 0.3s;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+            }
+        }
+    </style>
+
     <script>
-        function updateTime() {
-            const now = new Date();
-            let hours = now.getHours();
-            const minutes = now.getMinutes();
-            const seconds = now.getSeconds();
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12;
+        // Your JavaScript code here
 
-            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
-            document.getElementById('time').textContent = timeString;
-        }
+        // Mouse trail functionality
+        let isMouseMoving = false;
 
-        function showAlert() {
-            alert('This time may be behind a bit');
-        }
+        document.addEventListener("mousemove", (e) => {
+            const trail = document.createElement("div");
+            trail.className = "mouse-trail";
+            const trailLine = document.createElement("div");
+            trailLine.className = "mouse-trail-line";
+            trail.appendChild(trailLine);
+            document.body.appendChild(trail);
 
-        setInterval(updateTime, 1000);
-        updateTime();
+            const x = e.clientX;
+            const y = e.clientY;
 
-        setTimeout(showAlert, 5000);
+            trail.style.left = x + "px";
+            trail.style.top = y + "px";
 
-        // Typing and erasing effect for the code text
-        const codeText = document.getElementById('codeText');
-        const text = 'Coded by James';
-        let index = 0;
-        let isTyping = true;
+            // Remove trail element after a short delay
+            setTimeout(() => {
+                trail.remove();
+            }, 300);
 
-        function typeCodeText() {
-            codeText.textContent = text.slice(0, index);
-            index++;
+            isMouseMoving = true;
+        });
 
-            if (index > text.length) {
-                isTyping = false;
-                setTimeout(eraseCodeText, 1000);
-            } else {
-                setTimeout(typeCodeText, 150);
-            }
-        }
+        // Check for mouse movement to fade out the trail
+        setInterval(() => {
+            if (!isMouseMoving) return;
 
-        function eraseCodeText() {
-            codeText.textContent = text.slice(0, index);
-            index--;
+            // Reset the flag
+            isMouseMoving = false;
 
-            if (index >= 0) {
-                setTimeout(eraseCodeText, 150);
-            } else {
-                isTyping = true;
-                setTimeout(typeCodeText, 500);
-            }
-        }
+            // Fade out existing trails
+            const trails = document.querySelectorAll(".mouse-trail");
+            trails.forEach((trail) => {
+                trail.style.opacity = "0";
+            });
+        }, 1000);
 
-        // Start the initial typing animation
-        typeCodeText();
+        // Your existing JavaScript code
+        // ...
     </script>
 </body>
 </html>
