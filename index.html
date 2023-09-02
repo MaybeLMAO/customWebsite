@@ -124,10 +124,14 @@
             background: white;
             width: 2px; /* Adjust the width of the line */
             height: 100px; /* Adjust the length of the line */
-            opacity: 0.5;
+            opacity: 0;
             pointer-events: none;
-            transition: opacity 0.2s;
             transform-origin: top center;
+            transition: opacity 0.2s;
+        }
+
+        .mouse-moving .mouse-trail {
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -148,7 +152,7 @@
     </div>
     <!-- Typing and erasing code text -->
     <div id="codeText"></div>
-    <!-- Mouse trail elements -->
+    <!-- Mouse trail element -->
     <div class="mouse-trail"></div>
     <!-- MP4 audio element for playing the song -->
     <audio controls>
@@ -214,20 +218,25 @@
         // Mouse trail effect
         const mouseTrail = document.querySelector('.mouse-trail');
 
-        document.addEventListener('mousemove', (event) => {
-            const x = event.clientX;
-            const y = event.clientY;
+        let isMouseMoving = false;
 
-            mouseTrail.style.left = `${x}px`;
-            mouseTrail.style.top = `${y}px`;
+        document.addEventListener('mousemove', () => {
+            if (!isMouseMoving) {
+                isMouseMoving = true;
+                document.body.classList.add('mouse-moving');
+            }
+
+            clearTimeout(isMouseMoving);
+            isMouseMoving = setTimeout(() => {
+                isMouseMoving = false;
+                document.body.classList.remove('mouse-moving');
+            }, 1000);
         });
 
         document.addEventListener('mouseout', () => {
-            mouseTrail.style.opacity = 0;
-        });
-
-        document.addEventListener('mouseover', () => {
-            mouseTrail.style.opacity = 0.5;
+            if (!isMouseMoving) {
+                mouseTrail.style.opacity = 0;
+            }
         });
     </script>
 </body>
