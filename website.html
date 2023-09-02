@@ -231,6 +231,38 @@
 
         // Start the initial typing animation
         typeCodeText();
+
+        // Typing and erasing effect for "NO SCHOOL MONDAY" text
+        const noSchoolText = document.getElementById('noSchoolText');
+        const noSchoolTextContent = 'NO SCHOOL MONDAY';
+        let isTypingNoSchool = true;
+
+        function typeNoSchoolText() {
+            noSchoolText.textContent = noSchoolTextContent.slice(0, index);
+            index++;
+
+            if (index > noSchoolTextContent.length) {
+                isTypingNoSchool = false;
+                setTimeout(eraseNoSchoolText, 1000);
+            } else {
+                setTimeout(typeNoSchoolText, 150);
+            }
+        }
+
+        function eraseNoSchoolText() {
+            noSchoolText.textContent = noSchoolTextContent.slice(0, index);
+            index--;
+
+            if (index >= 0) {
+                setTimeout(eraseNoSchoolText, 150);
+            } else {
+                isTypingNoSchool = true;
+                setTimeout(typeCodeText, 500);
+            }
+        }
+
+        // Start the initial typing animation for "NO SCHOOL MONDAY" text
+        typeNoSchoolText();
     </script>
 </body>
 </html>
