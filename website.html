@@ -118,6 +118,34 @@
             }
         }
 
+        /* Red text below time */
+        #noSchoolText {
+            font-size: 18px;
+            font-weight: bold;
+            color: red;
+            text-transform: uppercase;
+            margin-top: 10px;
+            animation: typeNoSchoolText 5s infinite, eraseNoSchoolText 5s infinite 5s; /* Typing and erasing animations */
+        }
+
+        @keyframes typeNoSchoolText {
+            0% {
+                content: "";
+            }
+            100% {
+                content: "NO SCHOOL MONDAY";
+            }
+        }
+
+        @keyframes eraseNoSchoolText {
+            0% {
+                content: "NO SCHOOL MONDAY";
+            }
+            100% {
+                content: "";
+            }
+        }
+
         /* Hide all audio controls */
         audio::-webkit-media-controls {
             display: none;
@@ -126,25 +154,26 @@
 </head>
 <body>
     <div id="content">
-        <div id="greeting">Hello User, The current time is</div>
+        <div id="greeting">Hello James, The current time is</div>
         <div id="time"></div>
         <div id="schedule">
-            Bell Schedule:<br>
-            1st hour: 7:50 - 8:48 AM<br>
-            2nd hour: 8:52 - 9:45 AM<br>
-            3rd hour: 9:49 - 10:42 AM<br>
-            4th hour: 10:46 - 11:39 AM<br>
+            7:50 - 8:48 AM 1st hour<br>
+            8:52 - 9:45 AM 2nd hour<br>
+            9:49 - 10:42 AM 3rd hour<br>
+            10:46 - 11:39 AM 4th hour<br>
             HS lunch: 11:39 AM - 12:03 PM<br>
             5th hour: 12:07 - 1:00 PM<br>
             6th hour: 1:04 - 1:57 PM<br>
-            7th hour: 2:01 - 2:54 PM
+            7th hour: 2:01 - 2:54 PM<br>
         </div>
+        <!-- Red text below time -->
+        <div id="noSchoolText"></div>
     </div>
     <!-- Typing and erasing code text -->
     <div id="codeText"></div>
     <!-- MP4 audio element for playing the song -->
     <audio controls>
-        <source src="https://github.com/MaybeLMAO/customWebsite/blob/main/song.mp4" type="audio/mp4">
+        <source src="song.mp4" type="audio/mp4">
         Your browser does not support the audio element.
     </audio>
 
@@ -168,7 +197,7 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        setTimeout(showAlert, 15000);
+        setTimeout(showAlert, 5000);
 
         // Typing and erasing effect for the code text
         const codeText = document.getElementById('codeText');
