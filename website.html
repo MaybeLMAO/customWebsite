@@ -78,26 +78,26 @@
             z-index: -1;
         }
 
-        /* Style for the code text */
-        #codeText {
-            font-family: 'Roboto', sans-serif; /* Roboto font */
-            font-size: 21px; /* Slightly smaller font size */
+        /* Style for the code text and NO SCHOOL MONDAY text */
+        .typewriter-text {
+            font-family: 'Roboto', sans-serif;
+            font-size: 21px;
             color: white;
             position: absolute;
-            bottom: 10px; /* Positioned at the bottom */
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            overflow: hidden; /* Hide overflowing text */
-            white-space: nowrap; /* Prevent text from wrapping */
+            overflow: hidden;
+            white-space: nowrap;
         }
 
-        #codeText::after {
-            content: "|"; /* White text line */
+        .typewriter-text::after {
+            content: "|";
             display: inline-block;
-            margin-left: 5px; /* Adjust the space between letters and the line */
+            margin-left: 5px;
             width: 0;
             color: white;
-            animation: typeText 5s infinite, eraseText 5s infinite 5s; /* Typing and erasing animations */
+            animation: typeText 5s infinite, eraseText 5s infinite 5s;
         }
 
         @keyframes typeText {
@@ -118,34 +118,6 @@
             }
         }
 
-        /* Red text below time */
-        #noSchoolText {
-            font-size: 18px;
-            font-weight: bold;
-            color: red;
-            text-transform: uppercase;
-            margin-top: 10px;
-            animation: typeNoSchoolText 5s infinite, eraseNoSchoolText 5s infinite 5s; /* Typing and erasing animations */
-        }
-
-        @keyframes typeNoSchoolText {
-            0% {
-                content: "";
-            }
-            100% {
-                content: "NO SCHOOL MONDAY";
-            }
-        }
-
-        @keyframes eraseNoSchoolText {
-            0% {
-                content: "NO SCHOOL MONDAY";
-            }
-            100% {
-                content: "";
-            }
-        }
-
         /* Hide all audio controls */
         audio::-webkit-media-controls {
             display: none;
@@ -154,9 +126,9 @@
 </head>
 <body>
     <div id="content">
-        <div id="greeting">Hello User, The current time is</div>
-        <div id="time"></div>
-        <div id="schedule">
+        <div id="greeting" class="typewriter-text">Hello User, The current time is</div>
+        <div id="time" class="typewriter-text"></div>
+        <div id="schedule" class="typewriter-text">
             7:50 - 8:48 AM 1st hour<br>
             8:52 - 9:45 AM 2nd hour<br>
             9:49 - 10:42 AM 3rd hour<br>
@@ -166,11 +138,10 @@
             6th hour: 1:04 - 1:57 PM<br>
             7th hour: 2:01 - 2:54 PM<br>
         </div>
-        <!-- Red text below time -->
-        <div id="noSchoolText"></div>
+        <div id="noSchoolText" class="typewriter-text"></div>
     </div>
     <!-- Typing and erasing code text -->
-    <div id="codeText"></div>
+    <div id="codeText" class="typewriter-text"></div>
     <!-- MP4 audio element for playing the song -->
     <audio controls>
         <source src="song.mp4" type="audio/mp4">
@@ -229,19 +200,17 @@
             }
         }
 
-        // Start the initial typing animation
-        typeCodeText();
-
         // Typing and erasing effect for "NO SCHOOL MONDAY" text
         const noSchoolText = document.getElementById('noSchoolText');
         const noSchoolTextContent = 'NO SCHOOL MONDAY';
+        let indexNoSchool = 0;
         let isTypingNoSchool = true;
 
         function typeNoSchoolText() {
-            noSchoolText.textContent = noSchoolTextContent.slice(0, index);
-            index++;
+            noSchoolText.textContent = noSchoolTextContent.slice(0, indexNoSchool);
+            indexNoSchool++;
 
-            if (index > noSchoolTextContent.length) {
+            if (indexNoSchool > noSchoolTextContent.length) {
                 isTypingNoSchool = false;
                 setTimeout(eraseNoSchoolText, 1000);
             } else {
@@ -250,18 +219,19 @@
         }
 
         function eraseNoSchoolText() {
-            noSchoolText.textContent = noSchoolTextContent.slice(0, index);
-            index--;
+            noSchoolText.textContent = noSchoolTextContent.slice(0, indexNoSchool);
+            indexNoSchool--;
 
-            if (index >= 0) {
+            if (indexNoSchool >= 0) {
                 setTimeout(eraseNoSchoolText, 150);
             } else {
                 isTypingNoSchool = true;
-                setTimeout(typeCodeText, 500);
+                setTimeout(typeNoSchoolText, 500);
             }
         }
 
-        // Start the initial typing animation for "NO SCHOOL MONDAY" text
+        // Start the initial typing animation
+        typeCodeText();
         typeNoSchoolText();
     </script>
 </body>
