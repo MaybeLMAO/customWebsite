@@ -118,18 +118,6 @@
             }
         }
 
-        /* Original mouse trail effect */
-        .mouse-trail {
-            position: absolute;
-            background: white;
-            width: 2px; /* Adjust the width of the line */
-            height: 100px; /* Adjust the length of the line */
-            opacity: 0;
-            pointer-events: none;
-            transform-origin: top center;
-            transition: opacity 0.2s;
-        }
-
         /* Hide all audio controls */
         audio::-webkit-media-controls {
             display: none;
@@ -162,8 +150,6 @@
     </div>
     <!-- Typing and erasing code text -->
     <div id="codeText"></div>
-    <!-- Original mouse trail element -->
-    <div class="mouse-trail"></div>
     <!-- MP4 audio element for playing the song -->
     <audio controls>
         <source src="song.mp4" type="audio/mp4">
@@ -224,22 +210,6 @@
 
         // Start the initial typing animation
         typeCodeText();
-
-        // Original mouse trail effect
-        document.addEventListener('mousemove', (event) => {
-            const mouseTrail = document.querySelector('.mouse-trail');
-            const mouseX = event.clientX;
-            const mouseY = event.clientY;
-
-            mouseTrail.style.left = mouseX + 'px';
-            mouseTrail.style.top = mouseY + 'px';
-            mouseTrail.style.opacity = 1;
-        });
-
-        document.addEventListener('mouseout', () => {
-            const mouseTrail = document.querySelector('.mouse-trail');
-            mouseTrail.style.opacity = 0;
-        });
     </script>
 </body>
 </html>
