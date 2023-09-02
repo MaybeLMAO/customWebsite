@@ -118,26 +118,21 @@
             }
         }
 
-        /* Modern mouse trail effect */
+        /* Original mouse trail effect */
         .mouse-trail {
             position: absolute;
-            background: radial-gradient(circle, white 15%, transparent 20%);
-            width: 15px; /* Adjust the width of the trail */
-            height: 15px; /* Adjust the height of the trail */
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
+            background: white;
+            width: 2px; /* Adjust the width of the line */
+            height: 100px; /* Adjust the length of the line */
             opacity: 0;
-            animation: trailFadeOut 0.3s linear;
+            pointer-events: none;
+            transform-origin: top center;
+            transition: opacity 0.2s;
         }
 
-        @keyframes trailFadeOut {
-            0% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-            }
+        /* Hide all audio controls */
+        audio::-webkit-media-controls {
+            display: none;
         }
 
         /* Audio controls */
@@ -167,10 +162,10 @@
     </div>
     <!-- Typing and erasing code text -->
     <div id="codeText"></div>
-    <!-- Modern mouse trail element -->
+    <!-- Original mouse trail element -->
     <div class="mouse-trail"></div>
     <!-- MP4 audio element for playing the song -->
-    <audio controls autoplay>
+    <audio controls>
         <source src="song.mp4" type="audio/mp4">
         Your browser does not support the audio element.
     </audio>
@@ -230,7 +225,7 @@
         // Start the initial typing animation
         typeCodeText();
 
-        // Modern mouse trail effect
+        // Original mouse trail effect
         document.addEventListener('mousemove', (event) => {
             const mouseTrail = document.querySelector('.mouse-trail');
             const mouseX = event.clientX;
@@ -238,9 +233,7 @@
 
             mouseTrail.style.left = mouseX + 'px';
             mouseTrail.style.top = mouseY + 'px';
-            mouseTrail.style.animation = 'none'; // Clear previous animation
-            void mouseTrail.offsetWidth; // Trigger reflow to restart the animation
-            mouseTrail.style.animation = null;
+            mouseTrail.style.opacity = 1;
         });
 
         document.addEventListener('mouseout', () => {
